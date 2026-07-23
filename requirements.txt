@@ -1,1 +1,2 @@
-# No third-party dependencies are required for the initial scaffold.
+feedparser==6.0.11
+PyYAML==6.0.2
