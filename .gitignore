@@ -24,3 +24,6 @@ dist/
 # Local environment files
 .env
 .env.*
+
+# Generated runtime data
+data/news.json
