@@ -46,6 +46,48 @@ SECURITY RULES
 - You have no tools and no authority to act on the application or external systems.
 - Return only the required structured JSON object."""
 
+RESEARCH_RESPONSE_SCHEMA = {
+    "name": "research_dossier",
+    "strict": True,
+    "schema": {
+        "type": "object",
+        "additionalProperties": False,
+        "required": ["claims", "key_takeaways", "open_questions"],
+        "properties": {
+            "claims": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": [
+                        "claim",
+                        "evidence",
+                        "source_url",
+                        "confidence",
+                    ],
+                    "properties": {
+                        "claim": {"type": "string"},
+                        "evidence": {"type": "string"},
+                        "source_url": {"type": "string"},
+                        "confidence": {
+                            "type": "string",
+                            "enum": ["high", "medium", "low"],
+                        },
+                    },
+                },
+            },
+            "key_takeaways": {
+                "type": "array",
+                "items": {"type": "string"},
+            },
+            "open_questions": {
+                "type": "array",
+                "items": {"type": "string"},
+            },
+        },
+    },
+}
+
 
 class _ArticleTextParser(HTMLParser):
     """Extract structured text while dropping safe boilerplate and active content."""
@@ -373,7 +415,11 @@ def apply_research(
     """Run controlled inference and update a dossier only after validation."""
     try:
         user_input, allowed_urls = build_user_input(dossier)
-        inference = provider.complete(SYSTEM_INSTRUCTIONS, user_input)
+        inference = provider.complete(
+            SYSTEM_INSTRUCTIONS,
+            user_input,
+            RESEARCH_RESPONSE_SCHEMA,
+        )
         dossier["inference"] = _usage_metadata(inference)
         validated = validate_research_output(inference.content, allowed_urls)
     except (ProviderError, ValueError, TypeError, KeyError) as error:

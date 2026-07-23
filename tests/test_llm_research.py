@@ -56,9 +56,15 @@ class FakeProvider(ResearchProvider):
     def __init__(self, content: str):
         self.content = content
 
-    def complete(self, system_instructions: str, user_input: str):
+    def complete(
+        self,
+        system_instructions: str,
+        user_input: str,
+        response_schema=None,
+    ):
         self.system_instructions = system_instructions
         self.user_input = user_input
+        self.response_schema = response_schema
         return InferenceResult(
             content=self.content,
             usage=InferenceUsage("test/model", 100, 25, 125),
@@ -66,7 +72,12 @@ class FakeProvider(ResearchProvider):
 
 
 class FailingProvider(ResearchProvider):
-    def complete(self, system_instructions: str, user_input: str):
+    def complete(
+        self,
+        system_instructions: str,
+        user_input: str,
+        response_schema=None,
+    ):
         raise ProviderError("API unavailable")
 
 

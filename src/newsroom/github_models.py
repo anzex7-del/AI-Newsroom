@@ -20,49 +20,6 @@ GITHUB_MODELS_ENDPOINT = "https://models.github.ai/inference/chat/completions"
 DEFAULT_MODEL = "openai/gpt-4.1-mini"
 LOGGER = logging.getLogger(__name__)
 
-RESEARCH_RESPONSE_SCHEMA = {
-    "name": "research_dossier",
-    "strict": True,
-    "schema": {
-        "type": "object",
-        "additionalProperties": False,
-        "required": ["claims", "key_takeaways", "open_questions"],
-        "properties": {
-            "claims": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "additionalProperties": False,
-                    "required": [
-                        "claim",
-                        "evidence",
-                        "source_url",
-                        "confidence",
-                    ],
-                    "properties": {
-                        "claim": {"type": "string"},
-                        "evidence": {"type": "string"},
-                        "source_url": {"type": "string"},
-                        "confidence": {
-                            "type": "string",
-                            "enum": ["high", "medium", "low"],
-                        },
-                    },
-                },
-            },
-            "key_takeaways": {
-                "type": "array",
-                "items": {"type": "string"},
-            },
-            "open_questions": {
-                "type": "array",
-                "items": {"type": "string"},
-            },
-        },
-    },
-}
-
-
 class GitHubModelsProvider(ResearchProvider):
     """Send constrained chat-completion requests to GitHub Models."""
 
@@ -96,7 +53,12 @@ class GitHubModelsProvider(ResearchProvider):
         LOGGER.info("endpoint: %s", GITHUB_MODELS_ENDPOINT)
         LOGGER.info("model: %s", self.model)
 
-    def complete(self, system_instructions: str, user_input: str) -> InferenceResult:
+    def complete(
+        self,
+        system_instructions: str,
+        user_input: str,
+        response_schema: dict[str, Any] | None = None,
+    ) -> InferenceResult:
         """Request one non-streaming, schema-constrained completion."""
         self.log_diagnostics()
         payload = {
@@ -105,13 +67,14 @@ class GitHubModelsProvider(ResearchProvider):
                 {"role": "system", "content": system_instructions},
                 {"role": "user", "content": user_input},
             ],
-            "response_format": {
-                "type": "json_schema",
-                "json_schema": RESEARCH_RESPONSE_SCHEMA,
-            },
             "temperature": 0,
             "max_tokens": 2000,
         }
+        if response_schema is not None:
+            payload["response_format"] = {
+                "type": "json_schema",
+                "json_schema": response_schema,
+            }
         request = Request(
             GITHUB_MODELS_ENDPOINT,
             data=json.dumps(payload).encode("utf-8"),

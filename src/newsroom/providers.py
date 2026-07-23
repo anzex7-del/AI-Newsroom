@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Any
 
 
 class ProviderError(RuntimeError):
@@ -32,5 +33,10 @@ class ResearchProvider(ABC):
     """Interface implemented by controlled research model providers."""
 
     @abstractmethod
-    def complete(self, system_instructions: str, user_input: str) -> InferenceResult:
+    def complete(
+        self,
+        system_instructions: str,
+        user_input: str,
+        response_schema: dict[str, Any] | None = None,
+    ) -> InferenceResult:
         """Return one model response without taking application actions."""
