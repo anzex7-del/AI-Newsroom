@@ -1,0 +1,39 @@
+name: AI Newsroom
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: read
+  models: read
+
+jobs:
+  test-and-run:
+    if: github.event_name == 'workflow_dispatch' || vars.ENABLE_DAILY_PIPELINE == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AI_MODEL: ${{ vars.AI_MODEL || 'openai/gpt-4.1-mini' }}
+      RESEARCH_MAX_ARTICLE_CHARS: ${{ vars.RESEARCH_MAX_ARTICLE_CHARS || '12000' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project and dependencies
+        run: python -m pip install --editable .
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Run one-candidate newsroom pipeline
+        run: python src/run_pipeline.py

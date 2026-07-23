@@ -1,0 +1,24 @@
+{
+  "story_id": "story_example",
+  "title": "Example verified technology update",
+  "editorial_gate": "eligible_for_writing",
+  "draft": {
+    "linkedin": {
+      "text": "A concise draft based only on verified claims. It explains the practical significance without adding unsupported context.",
+      "hashtags": [
+        "#Technology"
+      ]
+    },
+    "x": {
+      "text": "A concise draft based only on verified facts."
+    }
+  },
+  "error": null,
+  "inference": {
+    "model": "provider/model-name",
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0
+  },
+  "output_status": "draft"
+}
