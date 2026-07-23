@@ -30,3 +30,4 @@ dist/
 data/news.json
 data/candidates.json
 data/research/*.json
+data/output/*.json
