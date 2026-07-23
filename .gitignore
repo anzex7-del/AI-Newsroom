@@ -24,7 +24,9 @@ dist/
 # Local environment files
 .env
 .env.*
+!.env.example
 
 # Generated runtime data
 data/news.json
 data/candidates.json
+data/research/*.json

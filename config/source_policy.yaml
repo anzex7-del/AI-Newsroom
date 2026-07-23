@@ -1,0 +1,25 @@
+# Source trust tiers for future research and fact-checking.
+#
+# tier_1_primary:
+#   Original evidence or first-party material, such as an official announcement,
+#   specification, filing, dataset, or direct statement.
+#
+# tier_2_authoritative:
+#   Independent sources with strong subject expertise and editorial standards.
+#
+# tier_3_secondary:
+#   Useful reporting or commentary that should be corroborated for key claims.
+#
+# untrusted:
+#   Unknown, misleading, or unsuitable sources that should not support claims.
+#
+# Add real domains only after an editorial review. No domains are assumed here.
+tiers:
+  tier_1_primary:
+    domains: []
+  tier_2_authoritative:
+    domains: []
+  tier_3_secondary:
+    domains: []
+  untrusted:
+    domains: []
