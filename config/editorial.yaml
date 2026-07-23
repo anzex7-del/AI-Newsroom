@@ -1,0 +1,42 @@
+# Deterministic News Scout ranking settings.
+recency_window_days: 30
+minimum_relevance_score: 4
+
+scoring:
+  title_topic_match: 5
+  summary_topic_match: 2
+  maximum_recency_bonus: 3
+
+source_priorities:
+  Microsoft Foundry Blog: 2
+
+topics:
+  Microsoft Copilot:
+    - microsoft copilot
+  Microsoft 365 Copilot:
+    - microsoft 365 copilot
+    - m365 copilot
+  Copilot Studio:
+    - copilot studio
+  Microsoft Foundry:
+    - microsoft foundry
+    - azure ai foundry
+  Azure AI:
+    - azure ai
+  AI agents:
+    - ai agent
+    - ai agents
+  agentic AI:
+    - agentic ai
+  model releases:
+    - model release
+    - model releases
+    - new model
+  enterprise AI:
+    - enterprise ai
+  AI governance:
+    - ai governance
+  AI security:
+    - ai security
+  AI compliance:
+    - ai compliance

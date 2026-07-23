@@ -27,3 +27,4 @@ dist/
 
 # Generated runtime data
 data/news.json
+data/candidates.json
