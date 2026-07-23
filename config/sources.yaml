@@ -1,0 +1,5 @@
+# Example source configuration. Add real source details in future development.
+sources:
+  - name: Example technology news source
+    url: null
+    enabled: false
